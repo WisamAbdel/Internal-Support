@@ -1,0 +1,70 @@
+<!DOCTYPE>
+
+<html lang="en">
+<title> Internal Support </title>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/bootstrap.css') }}" media="screen">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/custom.min.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='graphics/logo.jpg') }}">
+
+
+    <style>
+.div-center {
+        margin: auto;
+
+//        height: 50%;
+//        border: 3px solid green;
+        padding: 30px;
+        background: #4e5d6c;
+        border-radius: 5px;
+}
+.jumbotron {
+        margin: auto;
+        border-radius: 2px;
+        padding: 30px;
+}
+
+    </style>
+</head>
+
+
+<body>
+<div class="container">
+    <div class="row">
+
+
+
+        <div class="div-center ">
+
+        {% if error %}
+        <div class="alert alert-dismissible alert-danger">
+            <strong>Oh snappy!</strong> {{ error }}
+        </div>
+        {% endif %}
+
+
+
+        <div class="jumbotron">
+            <h1 class="display-3"><img src="{{ url_for('static', filename='graphics/logo.jpg') }}" height="100px" width="100px"/>Something went wrong!</h1>
+
+                  <hr class="my-4">
+                    <p>We were unable to process your request at this time. If you feel that this is a mistake, please contact a supervisor.</p>
+                      <p class="lead">
+
+                            </p>
+                        </div>
+
+
+
+
+
+                </div>
+        </div>
+</div>
+
+
+    </body>
+
+
+</html>

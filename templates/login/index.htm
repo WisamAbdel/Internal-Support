@@ -1,0 +1,70 @@
+<!DOCTYPE>
+
+<html lang="en">
+<title> Internal Support </title>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/bootstrap.css') }}" media="screen">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/custom.min.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='graphics/logo.jpg') }}">
+
+    <style>
+.div-center {
+        margin: auto;
+        width: 1000px;
+//        height: 50%;
+//        border: 3px solid green;
+        padding: 30px;
+        background: #4e5d6c;
+        border-radius: 5px;
+}
+.jumbotron {
+        margin: auto;
+        border-radius: 2px;
+        padding: 30px;
+}
+
+    </style>
+</head>
+
+
+<body>
+<div class="container">
+    <div class="row">
+
+
+
+        <div class=" col-md-4 div-center">
+
+        {% if error %}
+        <div class="alert alert-dismissible alert-danger">
+            <strong>Oh snappy!</strong> {{ error }}
+        </div>
+        {% endif %}
+
+
+            <form method="POST">
+            <div class="form-group">
+                <center>
+                <img src="{{ url_for('static', filename='graphics/logo.jpg') }}" width="100" height="100"/>
+                </center>
+                    <small class="form-text text-muted">Username</small>
+
+                    <input type="text" class="form-control" name="username">
+                    <br/>
+                    <small class="form-text text-muted">Password</small>
+                    <input type="password"  class="form-control" name="password"><br/>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <br>
+                </form>
+
+                </div>
+
+        </div>
+    </div>
+    </div>
+
+    </body>
+
+
+</html>

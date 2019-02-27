@@ -1,0 +1,466 @@
+<!DOCTYPE>
+<html>
+    <title>Internal Support</title>
+
+    <head>
+	<meta developer="Amro Abdelghany" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/bootstrap-chat.css') }}" media="screen">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/custom-chat.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='chat_agent.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='graphics/logo.jpg') }}">
+
+
+    </head>
+<body>
+
+  <nav class="navbar navbar-expand navbar-dark bg-primary fixed-top">
+    <a class="navbar-brand" href="#"><img src ="{{ url_for('static', filename='graphics/logo.jpg') }}" height="50px"/> <b><button type="button" class="btn btn-link disabled"><font color='white' size='3px'>Internal Support</font></button></b></a>
+
+    <div class="collapse navbar-collapse" id="navbarColor02" style='margin-bottom: 0px;'>
+      <ul class="navbar-nav mr-auto"></ul>
+        <button id = "queueToggle" type="button" class="btn btn-{% if current_user.is_authenticated %}{% if current_user.in_queue >= 1 %}success{% else %}danger{% endif %}" onclick="queueMe();">{{ current_user.real_name}}</button>&nbsp; {% endif %}
+        <a href="/logout"><button class="btn btn-secondary my-2 my-sm-0">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></button></a>
+    </div>
+  </nav>
+
+  <div class="row">
+  <div class="col-md-2" id="ChatUsers">
+    <div class ="col-md-12">
+   <table class="table table-sm table-hover">
+    <thead>
+
+      <tr>
+      <!--  <th scope="col"><button type="button" class="btn btn-link disabled"><font color='black' size='3px'>ID</button> </th> //-->
+        <th scope="col"><button type="button" class="btn btn-link disabled"><font color='black' size='3px'>Employees</font></button></th>
+      </tr>
+
+    </thead>
+    <tbody id = "UseraddList">
+
+      <div id="ChatUsersList">
+
+                {% if current_user.is_authenticated %}
+                {% for interaction_id in employees %}
+                <tr style='cursor: pointer;'>
+        <td class ='user' data-userid = '{{ interaction_id }}'>{{ employees[interaction_id]['real_name'] }} </td>
+        </tr>
+                        {% endfor %}
+                {% endif %}
+
+      </div>
+
+    </tbody>
+  </table>
+
+</div>
+  </div>
+
+  <div class="col-md-6" id="ChatBox">
+        <div class='chatFunctions'>
+<nav class="navbar navbar-expand-lg navbar-primary bg-primary">
+ <font color='white'><b>Chat Box </b></font>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+
+
+       </li>
+    </ul>
+
+  </div>
+</nav>
+        </div><br />
+    <div class="chats-container">
+      {% for ids in chats %}
+
+<div style='display: none;' class='chat-container' id='{{ ids }}'data-username='{{ employees[ids]["username"] }}' data-activechat='false'>
+
+
+
+	<table class='table table-striped'>
+          <tbody>
+              <div class='message-container'>
+
+    <br/><i><div class="text-dark">
+    <center>New Interaction <b>{{ids}}</b> has been created and assigned to <b>{{ current_user.real_name }}</b>. Please allow a few moments for the agent to address your case.
+        </center></div></i>
+<hr/>
+
+        {% for ordered in range( 1 , chats[ids] | count - 1)  %}
+          {% if chats[ids][ordered|string]['message']  %}
+
+          <tr id = 'MessageBubble'><td><p id='nameTag'>
+            <button type='button' class='btn btn-link disabled'><font color='black'>{{ chats[ids][ordered|string]['name'] }}</font></button></p><i>
+<div class='timeStamp'><span class='badge badge-light'>{{ chats[ids][ordered|string]['time'] }}</span></div></i><hr/>
+              <p>{{ chats[ids][ordered|string]['message'] |replace("&#39;", "'") }}</p></td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+              </div>
+          </tbody>
+        </table>
+      </div>
+      {% endfor %}
+
+  </div>
+        <div class='row'>
+    <div class="form-group">
+       <textarea class="form-control" style="outline: none;" id="EntryBox" data-gramm_editor="false"></textarea>
+     </div>
+        </div>
+</div>
+
+
+  <div class="col-md-4" id="ChatOptions">
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+ <font color="white"> <button type="button" title="Show notes for current interaction." id="ShowNotesBtn" class="btn btn-primary"><i class="fa fa-info" aria-hidden="true"></i></button> </font>
+ <font color="white"> <button type="button" title="Show employee information." id="ShowProfileBtn" class="btn btn-primary"><i class="fa fa-user-circle" aria-hidden="true"></i></button> </font>
+<font color="white"> <button type="button" title="Chat settings." id="ShowSettingsBtn"class="btn btn-primary"><i class="fa fa-sliders" aria-hidden="true"></i></button> </font>
+<font color="white"> <button type="button" title="Transcripts" id="ShowTranscriptsBtn"class="btn btn-primary"><i class="fa fa-book" aria-hidden="true"></i>
+</button> </font>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+
+
+       </li>
+    </ul>
+
+  </div>
+</nav>
+
+
+<br/>
+
+<div class = 'tools-container'>
+<!-- Tools start here -->
+
+<!-- Employee Profile Begin //-->
+<div class ="tool-container" id = "profile-options"  style="display: none;">
+
+</div>
+<!-- Employee Profile End //-->
+<!-- Transcripts //-->
+<div class ="tool-container" id = "transcripts-options" style="display: none;">
+<div class="card">
+  <div class="card-body">
+    <center><h4 class="card-title"><i class="fa fa-inbox" aria-hidden="true"></i> &nbsp; Transcripts</h4></center>
+    <h6 class="card-subtitle mb-2 text-muted"><center>Look up chat transcripts using the Interaction ID</center></h6> <hr/>
+    <p class="card-text"></p>
+		<div class="row">
+			<div class="col-sm">
+				<strong>Interaction ID </strong>
+			</div>
+			<div class="col-sm">
+				<div class="form-group row">
+					<div class ="col-7">
+					<input maxlength= "10" id="transcriptsIDinput" class="form-control form-control-sm" type="text" placeholder="000">
+					</div>
+				</div>
+			</div>
+		</div>
+		<center><i>or</i></center>
+        <div class="row">
+            <div class="col-sm">
+                <strong>Employee Username </strong>
+            </div>
+            <div class="col-sm">
+                <div class="form-group row">
+                    <div class ="col-7">
+                    <input maxlength="30" disabled="" class="form-control form-control-sm" type="text" placeholder="N/A">
+                    </div>
+                </div>
+            </div>
+        </div>
+	<hr/>
+	<center><button type="button" id="lookupTranscript" class="btn btn-primary">Lookup</button></center>
+  </div>
+</div>
+</div>
+<!-- End of Transcripts //-->
+<div class ="tool-container" id = "chat-options" style="display: none;">
+<div class="card">
+  <div class="card-body">
+    <center><h4 class="card-title"><i class="fa fa-sliders" aria-hidden="true"></i> &nbsp; Options</h4></center>
+    <h6 class="card-subtitle mb-2 text-muted"><center>Interaction options</center></h6>
+        <hr />
+  <!--  <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <button type="button" class="btn btn-link">Primary</button>
+        </div>
+        <div class="col-sm">
+          <button type="button" onclick="passChat();" class="btn btn-link">Pass <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></button>
+        </div>
+        <div class="col-sm">
+          <button type="button" onclick="closeToggle();" class="btn btn-link">Close <i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+      </div>
+    </div> //-->
+    <div class="container">
+      <div class="row">
+        <button type="button" class="btn btn-link disabled" style="color: black;">Transfer Chat</button>
+      <div class="col-sm text-right">
+        <button type="button" onclick="passChat();" class="btn btn-secondary btn-sm"><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+</button>
+      </div>
+      </div>
+      <small class="text-muted">Transfer a chat interaction to an agent.</small>
+      <div id="transferToggle" class="sub-choice" style="display: none;">
+        <div class="card border-dark mb-3">
+          <div class="card-header"><b>Select an agent for chat transfer.</b></div>
+          <div class="card-body">
+          <center>
+            <span id='oops' class='oopsTransfer' style='display: none;'>
+              <div class="alert alert-dismissible alert-primary">
+                <p class="mb-0" id="oopsTransferText"></p>
+              </div>
+            </span>
+            <div class="form-group">
+              <select class="custom-select" id="transfer-agents">
+                <option value=""></option>
+              </select>
+            </div>
+            <button type="button" onclick="passChat();" class="btn btn-secondary">Cancel</button>
+            <button type="button" id="transferChat" class="btn btn-primary">Transfer <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i>
+  </button>
+        </center>
+      </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <button type="button" class="btn btn-link disabled" style="color: black;">Close Chat</button>
+      <div class="col-sm text-right">
+        <button type="button" onclick="closeToggle();" class="btn btn-secondary btn-sm"><i class="fa fa-window-close-o" aria-hidden="true"></i>
+</button>
+      </div>
+      </div>
+      <small class="text-muted">Close chat interaction with resolution.</small>
+      <div id="closeToggle" class="sub-choice" style="display: none;">
+        <br/>
+        <div class="card border-dark mb-3">
+
+
+        <div class="card-header"><b>What was the interaction resolution?</b></div>
+        <div class="card-body">
+    <div class="form-group">
+    <textarea class="form-control" onkeyup="countChar(this)" rows="3" maxlength="200" id="interactionResolution"></textarea>
+    <small id="emailHelp" class="form-text text-muted">Characters left: <span id="charNum">200</span></small>
+
+  </div>
+  </p>
+  <hr/><center><button type="button" onclick="closeToggle();" class="btn btn-secondary">Cancel</button>
+   <button type="button" id="endChat" class="btn btn-primary">Submit</button></center>
+  </div>
+  </div>
+  </div>
+
+      <div class="row">
+        <button type="button" class="btn btn-link disabled" style="color: black;">OFI</button>
+      <div class="col-sm text-right">
+        <button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-user-circle" aria-hidden="true"></i>
+        </button>
+      </div>
+      </div>
+      <small class="text-muted">Submit an opportunity for improvement <br>for an employee</small>
+
+      <div class="row">
+        <button type="button" class="btn btn-link disabled" style="color: black;">Send Interaction Details</button>
+      <div class="col-sm text-right">
+        <button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-info-circle" aria-hidden="true"></i></button>
+      </div>
+      </div>
+      <small class="text-muted">Send an agent your interaction details <br>for review.</small>
+
+
+    <center>
+
+
+</div>
+    </div>
+  </div>
+  </center>
+  </div>
+
+  {% if current_user.is_authenticated %}
+
+    {% for interaction in notes %}
+
+    <div class = "tool-container" style ="display: none;" data-interaction="{{notes[interaction]['interaction_id']}}">
+       <table class="table table-sm">
+          <tbody>  {% if notes[interaction]['verified'] == 'None' %}
+                    <tr class="table-danger"><td> <center><i class="fa fa-id-card-o" aria-hidden="true"></i><b id="verified"> NOT VERIFIED</b></center> </td></tr>
+                    {% else %}
+                      <tr class="table-success"><td> <center><i class="fa fa-id-card-o" aria-hidden="true"></i><b id="verified">{{ notes[interaction]['verified'] }}</b></center> </td>    </tr>
+                    {% endif %}
+          </tbody>
+       </table>
+       <div class="card mb-3">
+          <h5 class="card-header">
+             <center>Interaction: <b id="interaction_id">{{ notes[interaction]['interaction_id'] }}</b></center>
+          </h5>
+          <div class="card-body">
+             <h5 class="card-title" style="float: left;">
+                <button type="button" class="btn btn-link disabled"><font color="black">Case Type</font></button>
+             </h5>
+             <h5 class="card-subtitle text-muted" style="float: right;"> <button type="button" class="btn btn-link disabled"><font color="black"> <span id="case_type">{{ notes[interaction]['case_type'] }}</span> </font></button>
+             </h5>
+          </div>
+          <table class="table table-sm table-striped">
+             <tbody>
+                <tr>
+                   <td>
+                      <small>
+                         <button type="button" class="btn btn-link disabled">
+                            <font color="black">
+                               <center>Chat ID</center>
+                            </font>
+                         </button>
+                      </small>
+                   </td>
+                </tr>
+                <tr>
+                   <td id="chat_id">{{ notes[interaction]['chat_id'] }}</td>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Billing URL</font></button></small></td>
+                </tr>
+                <tr>
+                   <td id="billing_url">{{ notes[interaction]['billing_url'] }}</td>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Ticket(s)</font></button> </small></td>
+                <tr>
+                   <td id="ticket_id">{{ notes[interaction]['tickets'] }}</td>
+                </tr>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Affected URL</font></button></small></td>
+                <tr>
+                   <td id="affected_url">{{ notes[interaction]['affected_url'] }}</td>
+                </tr>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Server</font></button></small></td>
+                <tr>
+                   <td id="server">{{ notes[interaction]['server'] }}</td>
+                </tr>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Replication</font></button></small></td>
+                </tr>
+                <tr>
+                   <td id="replication">{{ notes[interaction]['replication'] }}</td>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Troubleshoot</font></button></small></td>
+                <tr>
+                   <td id="troubleshoot">{{ notes[interaction]['troubleshooting'] }}</td>
+                </tr>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Issue/Error</font></button></small></td>
+                </tr>
+                <tr>
+                   <td id="issue">{{ notes[interaction]['issue'] }}</td>
+                </tr>
+             </tbody>
+          </table>
+       </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+ <!-- Tools end here-->
+</div>
+  </div>
+</div>
+
+  <!-- JQuery and SocketIO includes//-->
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script
+  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+  integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='chat.js') }}"></script>
+
+  <script type="text/javascript" charset="utf-8">
+                var agent_name = '{{ current_user.real_name }}';
+                var socket = io.connect('http://' + document.domain + ':' + location.port);
+                socket.on('connect', function() {
+                        socket.emit('NewSessionID',
+         {
+                    'sid' : socket.id,
+            })
+        });
+         socket.on('createCase', function(data) {
+                   createCase( data['employee'] , data['employee_realname'], data['interaction_id'], data['notes'] );
+
+               });
+         socket.on('closeInt', function(data){
+                                       closeInt(data);
+               });
+        socket.on('receiveMessage', function(data) {
+                                receiveMessage(data);
+                                alertUser(data['interaction_id'], true);
+               });
+
+        function sendMessage( interaction_id, employee, message ){
+                socket.emit( 'SendMessage', {
+                'to' : employee,
+                'interaction_id' : interaction_id,
+                'message' : message,
+                'from' : socket.id,
+                'time_stamp' : today.getHours()+':'+today.getMinutes()  } );
+}
+        function queueMe() {
+                socket.emit( 'queueMe' , {
+                'sid' : socket.id } )
+
+        queueMeVisuals();
+}
+        function closeChat(data){
+          socket.emit( 'closeChat', {
+            'sid' : socket.id,
+            'employee' : data['employee'],
+            'interaction_resolution' : data['interaction_resolution'],
+            'interaction_id' : data['interaction_id']
+          } )
+
+        }
+        function countChar(val) {
+            var len = val.value.length;
+            if (len >= 200) {
+              val.value = val.value.substring(0, 200);
+            } else {
+              $('#charNum').text(200 - len);
+            }
+          };
+          socket.on('chatTransfer', function(data){
+            chatTransfer(data);
+          });
+//for jquery, jinja isn't processed there.
+const agent_real_name = '{{ current_user.real_name }}';
+const today = new Date();
+
+
+
+  </script>
+  </body>
+
+</html>

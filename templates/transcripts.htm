@@ -1,0 +1,87 @@
+<!DOCTYPE>
+<html>
+    <title>Internal Support</title>
+
+    <head>
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap-chat.css" media="screen">
+    <link rel="stylesheet" href="/static/bootstrap/custom-chat.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/chat_agent.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='graphics/logo.jpg') }}">
+
+    </head>
+<body>
+
+  <nav class="navbar navbar-expand navbar-dark bg-primary fixed-top">
+    <a class="navbar-brand" href="#"><img src ="/static/graphics/logo.jpg" height="50px"/> <b><button type="button" class="btn btn-link disabled"><font color='white' size='3px'>Internal Support - Transcripts</font></button></b></a>
+
+    <div class="collapse navbar-collapse" id="navbarColor02" style='margin-bottom: 0px;'>
+      <ul class="navbar-nav mr-auto"></ul>
+
+    </div>
+  </nav>
+
+  <div class="container">
+	<h1>Interaction: <b> {{chat['interaction_id'] }} </b> <h1>
+	<hr/>
+	<table class="table table-striped table-sm">
+  <thead>
+
+  </thead>
+  <tbody>
+    <tr>
+      <td><b>Chat ID</b></td>
+      <td>{{ notes['chat_id'] }}</td>
+      <td><b>Case Type</b></td>
+      <td>{{ notes['case_type'] }}</td>
+    </tr>
+    <tr>
+      <td><b>Billing URL</b></td>
+      <td>{{ notes['billing_url'] }}</td>
+      <td><b>Tickets</b></td>
+      <td>{{ notes['tickets'] }}</td>
+    </tr>
+    <tr>
+      <td><b>Verified</b></td>
+      <td>{{ notes['verified'] }}</td>
+      <td><b>Affected URL<b/></td>
+      <td>{{ notes['affected_url'] }}</td>
+    </tr>
+    <tr>
+      <td><b>Server</b></td>
+      <td>{{ notes['server'] }}</td>
+      <td><b>Replication Steps<b/></td>
+      <td>{{ notes['replication'] }}</td>
+    </tr>
+    <tr>
+      <td><b>TS Steps</b></td>
+      <td>{{ notes['troubleshooting'] }}</td>
+      <td><b>Issue<b/></td>
+      <td>{{ notes['issue'] }}</td>
+    </tr>
+  </tbody>
+</table>
+<hr/>
+<h4>Chat</h4>
+<br/><span style="float: left;">Creation: <b>{{ notes['date'] }}</b></span><center>
+<i>Employee</i>: <font class="text-primary"><b>{{ notes['employee'] }}</b></font> | <i>Agent</i>: <font class="text-primary"><b>{{ notes['agent'] }}</b></font> </center>
+<div class= 'chat-container'>
+    <table class="table table-striped table-sm">
+  <thead>
+
+  </thead>
+  <tbody>
+{% for ordered in range( 1 , chat | count - 1)  %}
+          {% if chat[ordered|string]['message']  %}
+			<tr><td><b>[{{chat[ordered|string]['time']}}] {{ chat[ordered|string]['name']}}</b>: {{ chat[ordered|string]['message'] |replace("&#39;", "'") }}</td></tr>
+		  {% endif %}
+{% endfor %}
+<tr><td><center><i>Interaction resolution: {{interaction_resolution }}</i></center></td></tr>
+
+
+</tbody>
+</table>
+</div>
+</div>
+</body>
+</html>

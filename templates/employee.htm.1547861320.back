@@ -1,0 +1,56 @@
+<!DOCTYPE>
+
+<html>
+{% if current_user.is_authenticated %}
+Hi! {{current_user.username}}
+{% endif %}
+
+<br><br>
+	<body>
+	{% if current_user.is_authenticated %}
+		{% for interaction_id in agents %}
+			<div class = "chatbox" id = "{{ interaction_id }}" data-agent = "{{ agents[interaction_id]['username'] }}">
+			You are in chat with: {{ agents[interaction_id]['real_name'] }}<br>
+			<b>Interaction ID: </b> {{ interaction_id }} <br>
+
+			 <br>
+
+			<input type="text" class="message"><button onclick="sendMessage(this)">Send</button>
+			<button onclick="closeChat();">CLOSE CHAT</button>
+			<br><br>
+		</div>
+		{% endfor %}
+	{% endif %}
+
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+
+	var socket = io.connect('http://' + document.domain + ':' + location.port);
+	socket.on('connect', function() {
+		socket.emit('NewSessionID',
+ {
+            'sid' : socket.id,
+    })
+});
+	socket.on('receiveMessage', function(data) {
+		console.log(data);
+});
+	function sendMessage(element){
+		const msg = $( '#'+ element.parentNode.id + " input.message" ).val();
+		socket.emit('SendMessage',
+	{
+			'interaction_id' : element.parentNode.id,
+			'message' : msg,
+			'from' : socket.id,
+			'time_stamp' : today.getHours()+':'+today.getMinutes(),
+			'to' : document.getElementById(element.parentNode.id).getAttribute('data-agent')
+
+	});
+
+	}
+const today = new Date();
+</script>
+
+</html>

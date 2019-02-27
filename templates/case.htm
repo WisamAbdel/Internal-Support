@@ -1,0 +1,116 @@
+
+
+<!DOCTYPE>
+<html>
+    <title>Case Creation</title>
+
+    <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/bootstrap.css') }}" media="screen">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/custom.min.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='graphics/logo.jpg') }}">
+
+    </head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#"><img src="https://www.hostgator.com/static/img/rsz_1flatlogo_separated_v19-09.png" height="35px" width="35px"> Internal Support</a>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02" style='margin-bottom: 0px;'>
+      <ul class="navbar-nav mr-auto"></ul>
+        <a href="/logout"><button class="btn btn-primary my-2 my-sm-0">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></button></a>
+    </div>
+    </div>
+  </nav>
+
+<div class="container">
+  {% if current_user.is_authenticated %}
+
+    {% if chats > 0 %}
+  <div class="alert alert-dismissible alert-warning">
+    <h4 class="alert-heading">Heads up!</h4>
+    <p class="mb-0">Seems like you're already in {{chats}} chat(s). <a href="http://is.gatorjedi.com:2222/chat" class="alert-link">Click here</a> to return to the chat interface.</p>
+  </div>
+    {% endif %}
+  {% endif %}
+
+    <form method='POST'>
+      <legend><i class="fa fa-edit"></i>Case creation</legend>
+      <button type="submit" class="btn btn-success float-right"> <i class="fa fa-commenting-o"></i> Start Chat!</button>
+<div class="row">
+    <div class="col-sm-6">
+      <span class="badge badge-primary">Customer notes</span>
+
+
+            <div class = 'form-group'>
+            <label>Chat ID</label>
+            <input type= 'text' name = 'chat_id' class = 'form-control col-sm-7' placeholder = '00x0000'>
+            </div>
+
+            <div class = 'form-group'>
+                <label>Billing URL</label>
+                <input type ='text' name = 'billing_url' class = 'form-control col-sm-7' placeholder = 'http://gbadmin.com/client/12345'>
+            </div>
+
+            <div class = 'form-group'>
+              <label> Verified </label>
+              <select class= 'form-control' name = 'verified' class = 'form-control col-sm-7'>
+                <option>None</option>
+                <option>Pin</option>
+                <option>Email</option>
+                <option>Pre-Verified</option>
+                <option>Billing Portal Login</option>
+              </select>
+            </div>
+            <div class = 'form-group'>
+              <label> Case type </label>
+              <select class= 'form-control' name = 'case_type' class = 'form-control col-sm-7'>
+                <option>Other</option>
+                <option>Billing</option>
+                <option>Technical</option>
+                <option>Ticket Approval request</option>
+                <option>Customer Service</option>
+                <option>Verifications</option>
+              </select>
+            </div>
+            <div class = 'form-group'>
+            <label>Ticket(s)</label>
+            <input type='text' name='tickets' class='form-control col-sm-7' placeholder='ABC-12345678'>
+            <small class ='text-muted'>Any relevant ticket(s) to the customer's case.</small>
+        </div>
+    </div>
+    <div class="col-sm-6">
+      <span class="badge badge-primary">Issue information</span>
+          <div class = 'form-group'>
+          <label>Affected URL</label>
+          <input type= 'text' name = 'affected_url' class = 'form-control col-sm-7' placeholder = 'http://example.com'>
+          <small class='text-muted'>The URL the issue can be replicated or found.</small>
+          </div>
+          <div class = 'form-group'>
+              <label>Server</label>
+              <input type ='text' name = 'server' class = 'form-control col-sm-7' placeholder = 'gator1234.hostgator.com'>
+          </div>
+          <div class = 'form-group'>
+          <label>Replication steps</label>
+          <input type= 'text' name = 'replication' class = 'form-control col-sm-7' placeholder = 'e.g. wp-admin->plugins->delete'>
+          <small class='text-muted'>How can we get to the issue?</small>
+          </div>
+          <div class = 'form-group'>
+          <label>Troubleshooting steps</label>
+          <input type= 'text' name = 'troubleshooting' class = 'form-control col-sm-7' placeholder = 'e.g. disabled plugins'>
+          <small class='text-muted'>How did you attempt to resolve it?</small>
+          </div>
+          <div class="form-group">
+            <label >Issue/Error</label>
+            <textarea class="form-control" name="issue" rows="3"></textarea>
+            <small class='text-muted'>Explain the issue, include error messages if any.</small>
+
+          </div>
+        </form>
+    </div>
+</div>
+</div>
+</body>
+
+</html>

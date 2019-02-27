@@ -1,0 +1,101 @@
+<!DOCTYPE>
+<html>
+
+    <head>
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap-chat.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/static/chat_agent.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    </head>
+<body>
+  <!-- Employee Profile Begin //-->
+  <div class ="tool-container" id = "profile-options">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title"><i class="fa fa-user-o" aria-hidden="true"></i> &nbsp; {{employee_name}}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">Web Advisor I</h6><hr/>
+        <h4 class="card-title"><button type="button" class="btn btn-link disabled"><font color="black"><i class="fa fa-bar-chart" aria-hidden="true"></i> stats</font></button></h4>
+  <!-- Stats //-->
+      <ul class="list-group">
+    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-primary">
+      Interactions
+      <span class="badge badge-primary badge-pill"><big>{{ profile['total'] }}</big></span>
+    </li>
+    {% if profile['interactions']['Billing'] %}
+    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+      Billing Cases
+      <span class="badge badge-dark badge-pill"><big>{{profile['interactions']['Billing']['count']}}</big></span>
+    </li>
+    {% endif %}
+    {% if profile['interactions']['Technical'] %}
+    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+      Technical Cases
+      <span class="badge badge-dark badge-pill"><big>{{profile['interactions']['Technical']['count']}}</big></span>
+    </li>
+    {% endif %}
+    {% if profile['interactions']['Verifications'] %}
+    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+      Verifications Cases
+      <span class="badge badge-dark badge-pill"><big>{{profile['interactions']['Verifications']['count']}}</big></span>
+    </li>
+    {% endif %}
+    {% if profile['interactions']['Customer Service'] %}
+    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+      CS Cases
+      <span class="badge badge-dark badge-pill"><big>{{profile['interactions']['Customer Service']['count']}}</big></span>
+    </li>
+    {% endif %}
+    {% if profile['interactions']['Ticket Approval request'] %}
+    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+      Ticket Approvals Cases
+      <span class="badge badge-dark badge-pill"><big>{{profile['interactions']['Ticket Approval request']['count']}}</big></span>
+    </li>
+    {% endif %}
+    {% if profile['interactions']['Other'] %}
+    <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-success">
+      Other Cases
+      <span class="badge badge-dark badge-pill"><big>{{profile['interactions']['Other']['count']}}</big></span>
+    </li>
+    {% endif %}
+  	</ul>
+
+  <!-- Notes //-->
+  	 <hr/>
+        <h4 class="card-title"><button type="button" class="btn btn-link disabled"><font color="black"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> notes</font></button></h4>
+    <div id="profile-notes-container">
+  	<table id="noteTable" class="table table-hover table-striped table-sm">
+
+      {% for note in employee_notes %}
+      {% if employee_notes[note]['note'] %}
+      <tr>
+      <td><small>{{ employee_notes[note]['date'] }}</small></td>
+      <td><small>{{ employee_notes[note]['agent'] }}</small></td>
+      <td><small>{{ employee_notes[note]['note'] }}</small></td>
+      </tr>
+      {% endif %}
+      {% endfor %}
+
+
+  	</table>
+  	</div>
+  	<div class="form-group">
+    <label class="col-form-label col-form-label-sm">Employee notation</label>
+    <input id='EntryData' maxlength="100" placeholder="Notes added, cannot be deleted." class="form-control form-control-sm" type="text">
+  </div>
+      </div>
+    </div>
+  </div>
+  <!-- Employee Profile End //-->
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='employeeData.js') }}"></script>
+  <script type="text/javascript">
+  const employee = '{{ employee_username }}';
+  const real_name = '{{ current_user.real_name }}';
+  const sid = '{{ current_user.sid }}';
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE>
+<html>
+    <title>Internal Support</title>
+
+    <head>
+        <link rel="stylesheet" href="https://bootswatch.com/4/lumen/bootstrap.css" media="screen">
+        <link rel="stylesheet" href="https://bootswatch.com/_assets/css/custom.min.css">
+    </head>
+<body>
+<style>
+	#ChatUsers{
+		background-color: white;
+		width: 100%;
+		height: 95%;
+	}
+	#ChatBox{
+		background-color: white;
+
+	}
+	#ChatOptions{
+		background-color: grey;
+
+	}
+
+</style>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <a class="navbar-brand" href="#"><img src="https://www.hostgator.com/static/img/rsz_1flatlogo_separated_v19-09.png" height="50px" width="50x"> <b>Internal Support</b></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto"></ul> 
+<h5><font color="white"><strong>{{ current_user.real_name }}</strong></font></h5> &nbsp;
+        <button id = "queueToggle" type="button" class="btn btn-{% if current_user.is_authenticated %}{% if current_user.in_queue >= 1 %}success{% else %}danger{% endif %}" onclick="queueMe();">{% if current_user.in_queue >= 1 %}Active{% else %}InActive{% endif %}</button>&nbsp; {% endif %}
+        <a href="/logout"><button class="btn btn-secondary my-2 my-sm-0">Logout</button></a>
+    </div>
+  </nav>
+
+  <div class="row">
+
+  <div class="col-md-2" id="ChatUsers">
+   <table class="table table-sm table-striped">
+    <thead>
+
+      <tr>
+        <th scope="col"> </th>
+        <th scope="col">Employees</th>
+      </tr>
+
+    </thead>
+    <tbody id = "UseraddList">
+
+      <div id="ChatUsersList">
+
+		{% if current_user.is_authenticated %}
+      		{% for interaction_id in current_user.chats.UserList %}
+		<tr>
+        <th scope="row"></th>
+        <td> {{ current_user.chats.UserList[interaction_id] | replace("{", "") | replace("}", "") | replace("'", "", 2) }} </td>
+      </tr>
+			{% endfor %}
+		{% endif %}
+
+      </div>
+
+    </tbody>
+  </table>
+
+
+  </div>
+
+  <div class="col-md-6" id="ChatBox">
+
+
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td>
+            <span class="badge badge-info">AGENT</span> <b>Sam A.</b>
+            <hr>
+            <p>  Hey! Thanks for contacting Internal Support, my name is Sam. </p>
+          </td>
+
+        </tr>
+        <tr>
+          <td>
+            <span class="badge badge-warning">EMPLOYEE</span> <b>Mark Lester. </b>
+            <hr>
+            <p></p>
+          </td>
+
+        </tr>
+        <tr>
+        <td>
+          <span class="badge badge-info">AGENT</span> <b>Sam A.</b>
+          <hr>
+          <p><font size="2"></font></p>
+        </td>
+      </tr>
+
+      <tr>
+      <td>
+        <span class="badge badge-info">AGENT</span> <b>Sam A.</b>
+        <hr>
+        <p></p>
+        </td>
+    </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="col-md-4" id="ChatOptions">.col-md-4
+
+  </div>
+
+  </div>
+
+  <!-- JQuery and SocketIO includes//-->
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+ <script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='chat.js') }}"></script>
+  <script type="text/javascript" charset="utf-8">
+
+  		var socket = io.connect('http://' + document.domain + ':' + location.port);
+  		socket.on('connect', function() {
+  			socket.emit('NewSessionID',
+  	 {
+  	            'sid' : socket.id,
+  	    })
+  	});
+  	 socket.on('createCase', function(data) {
+                   addAgent( data['employee'] , data['employee_realname'], data['interaction_id'] );
+
+               });
+  	socket.on('receiveMessage', function(data, fn) {
+  			document.getElementById('ChatUsersList').innerHTML += "<br/>" + data['message'];
+               });
+
+	function queueMe() {
+		socket.emit( 'queueMe' , { 
+		'username' : '{{ current_user.username }}' } )
+	
+	queueMeVisuals();
+}
+  </script>
+  </body>
+</html>

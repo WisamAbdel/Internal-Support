@@ -1,0 +1,74 @@
+ font{
+      font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  }
+  table { border-collapse: separate; }
+  tr {   }
+
+.tools-container{
+      overflow: scroll;
+      overflow-x: hidden;
+      height:88%;
+
+  }
+.chat-container{
+    overflow: scroll;
+    overflow-x: hidden;
+
+    height:70%;
+  }
+#profile-notes-container{
+
+	overflow: scroll;
+    overflow-x: hidden;
+    height:15%;
+}
+  
+ #MessageBubble p{
+    font-size: 14px;
+  }
+  #nameTag {
+    float: left;
+    font-weight: bold;
+  }
+  .timeStamp{
+    text-align: right;
+  }
+  textarea {
+    resize: none;
+  }
+
+  body {
+    background-color: #e8e8e8;
+
+  }
+  #EntryBox{
+    position: absolute;
+
+    bottom: 0%;
+    height: 13%;
+        width: 96.5%;
+  //  width: 100%;
+         margin-right: 2%;
+    margin-bottom: 1%;
+
+  }
+        #ChatUsers{
+                background-color: #e8e8e8;
+                width: 100%;
+                height: 95%;
+        }
+        #ChatBox{
+                background-color: #d3d3d3;
+                padding-top: 1%;
+                padding-bottom: 1%;
+                padding-left: 1.5%;
+                padding-right: 1.5%;
+                position: relative;
+        }
+        #ChatOptions{
+                background-color: #e8e8e8;
+
+        }
+  .navbar{
+    margin-bottom: -20px;
+  }

@@ -1,0 +1,298 @@
+<!DOCTYPE>
+<html>
+    <title>Internal Support</title>
+
+    <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/bootstrap-chat.css') }}" media="screen">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/custom-chat.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='chat_agent.css') }}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='graphics/logo.jpg') }}">
+
+    </head>
+<body>
+
+  <nav class="navbar navbar-expand navbar-dark bg-primary fixed-top">
+    <a class="navbar-brand" href="#"><img src ="{{ url_for('static', filename='graphics/logo.jpg') }}" height="50px"/> <b><button type="button" class="btn btn-link disabled"><font color='white' size='3px'>Internal Support</font></button></b></a>
+
+    <div class="collapse navbar-collapse" id="navbarColor02" style='margin-bottom: 0px;'>
+      <ul class="navbar-nav mr-auto"></ul>
+        <h4><font color="white">Hello, {{ current_user.real_name}} &nbsp;</font></h4>
+        <a href="/logout"><button class="btn btn-secondary my-2 my-sm-0">Logout <i class="fa fa-sign-out" aria-hidden="true"></i></button></a>
+        <a href="/case"><button class="btn btn-warning my-2 my-sm-0">New Case <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+    </div>
+  </nav>
+
+  <div class="row">
+  <div class="col-md-2" id="ChatUsers">
+    <div class ="col-md-12">
+   <table class="table table-sm table-hover">
+    <thead>
+
+      <tr>
+      <!--  <th scope="col"><button type="button" class="btn btn-link disabled"><font color='black' size='3px'>ID</button> </th> //-->
+        <th scope="col"><button type="button" class="btn btn-link disabled"><font color='black' size='3px'>Interactions</font></button></th>
+      </tr>
+
+    </thead>
+    <tbody id = "UseraddList">
+
+      <div id="ChatUsersList">
+
+                {% if current_user.is_authenticated %}
+                {% for interaction_id in agents %}
+                <tr style='cursor: pointer;'>
+        <td class ='user' data-userid = '{{ interaction_id }}'>{{ agents[interaction_id]['real_name'] }} </td>
+        </tr>
+                        {% endfor %}
+                {% endif %}
+
+      </div>
+
+    </tbody>
+  </table>
+
+</div>
+  </div>
+
+  <div class="col-md-6" id="ChatBox">
+        <div class='chatFunctions'>
+<nav class="navbar navbar-expand-lg navbar-primary bg-primary">
+ <font color='white'><b>Chat Box </b></font>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+
+
+       </li>
+    </ul>
+    <div id='confirmationClose' style= 'display: none;'>
+      <font color='white'><b>Are you sure you would like to end chat? </b> <button type="button" id ="confirmEndChat" class="btn btn-secondary">Yes</button> <button type="button" onclick="CnclEndCh();" class="btn btn-secondary">No</button> </font>
+    </div>
+    <button type="button" id='endChatBtn' onclick="closeToggle();" class="btn btn-sm btn-danger">x</button>
+
+  </div>
+</nav>
+        </div><br />
+    <div class="chats-container">
+      {% for ids in chats %}
+      <div style='display: none;' class='chat-container' id='{{ ids }}'data-username='{{ agents[ids]["username"] }}' data-activechat='false'>
+        <table class='table table-striped'>
+          <tbody>
+              <div class='message-container'>
+
+    <br/><i><div class="text-dark">
+    <center>New Interaction <b>{{ids}}</b> has been created and assigned to <b>{{ agents[ids]["real_name"] }}</b>. Please allow a few moments for the agent to address your case.
+        </center></div></i>
+<hr/>
+
+
+        {% for ordered in range( 1 , chats[ids] | count - 1)  %}
+          {% if chats[ids][ordered|string]['message']  %}
+
+          <tr id = 'MessageBubble'><td><p id='nameTag'>
+            <button type='button' class='btn btn-link disabled'><font color='black'>{{ chats[ids][ordered|string]['name'] }}</font></button></p><i>
+<div class='timeStamp'><span class='badge badge-light'>{{ chats[ids][ordered|string]['time'] }}</span></div></i><hr/>
+              <p>{{ chats[ids][ordered|string]['message'] |replace("&#39;", "'") }}</p></td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+              </div>
+          </tbody>
+        </table>
+      </div>
+      {% endfor %}
+
+  </div>
+        <div class='row'>
+    <div class="form-group">
+       <textarea class="form-control" style="outline: none;" id="EntryBox" data-gramm_editor="false"></textarea>
+     </div>
+        </div>
+</div>
+
+
+  <div class="col-md-4" id="ChatOptions">
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+ <font color='white'><b>Notes </b></font>
+  <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+
+  </button> //-->
+
+  <div class="collapse navbar-collapse" id="navbarColor02">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+
+
+       </li>
+    </ul>
+
+  </div>
+</nav>
+
+
+<br/>
+<div class = 'tools-container'>
+<!-- Tools start here -->
+<div class ="tool-container" id = "chat-options" style="display: none;">
+
+  </center>
+  </div>
+  {% if current_user.is_authenticated %}
+    {% for interaction in notes %}
+
+    <div class = "tool-container" style ="display: none;" data-interaction="{{notes[interaction]['interaction_id']}}">
+       <table class="table table-sm">
+          <tbody>  {% if notes[interaction]['verified'] == 'None' %}
+                    <tr class="table-danger"><td> <center><i class="fa fa-id-card-o" aria-hidden="true"></i><b id="verified"> NOT VERIFIED</b></center> </td></tr>
+                    {% else %}
+                      <tr class="table-success"><td> <center><i class="fa fa-id-card-o" aria-hidden="true"></i><b id="verified">{{ notes[interaction]['verified'] }}</b></center> </td>    </tr>
+                    {% endif %}
+          </tbody>
+       </table>
+       <div class="card mb-3">
+          <h5 class="card-header">
+             <center>Interaction: <b id="interaction_id">{{ notes[interaction]['interaction_id'] }}</b></center>
+          </h5>
+          <div class="card-body">
+             <h5 class="card-title" style="float: left;">
+                <button type="button" class="btn btn-link disabled"><font color="black">Case Type</font></button>
+             </h5>
+             <h5 class="card-subtitle text-muted" style="float: right;"> <button type="button" class="btn btn-link disabled"><font color="black"> <span id="case_type">{{ notes[interaction]['case_type'] }}</span> </font></button>
+             </h5>
+          </div>
+          <table class="table table-sm table-striped">
+             <tbody>
+                <tr>
+                   <td>
+                      <small>
+                         <button type="button" class="btn btn-link disabled">
+                            <font color="black">
+                               <center>Chat ID</center>
+                            </font>
+                         </button>
+                      </small>
+                   </td>
+                </tr>
+                <tr>
+                   <td id="chat_id">{{ notes[interaction]['chat_id'] }}</td>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Billing URL</font></button></small></td>
+                </tr>
+                <tr>
+                   <td id="billing_url">{{ notes[interaction]['billing_url'] }}</td>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Ticket(s)</font></button> </small></td>
+                <tr>
+                   <td id="ticket_id">{{ notes[interaction]['tickets'] }}</td>
+                </tr>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Affected URL</font></button></small></td>
+                <tr>
+                   <td id="affected_url">{{ notes[interaction]['affected_url'] }}</td>
+                </tr>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Server</font></button></small></td>
+                <tr>
+                   <td id="server">{{ notes[interaction]['server'] }}</td>
+                </tr>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Replication</font></button></small></td>
+                </tr>
+                <tr>
+                   <td id="replication">{{ notes[interaction]['replication'] }}</td>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Troubleshoot</font></button></small></td>
+                <tr>
+                   <td id="troubleshoot">{{ notes[interaction]['troubleshooting'] }}</td>
+                </tr>
+                </tr>
+                <tr>
+                   <td><small><button type="button" class="btn btn-link disabled"><font color="black">Issue/Error</font></button></small></td>
+                </tr>
+                <tr>
+                   <td id="issue">{{ notes[interaction]['issue'] }}</td>
+                </tr>
+             </tbody>
+          </table>
+       </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+ <!-- Tools end here-->
+</div>
+  </div>
+</div>
+
+  <!-- JQuery and SocketIO includes//-->
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script
+  src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+  integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='chat_employee.js') }}"></script>
+
+  <script type="text/javascript" charset="utf-8">
+                var agent_name = '{{ current_user.real_name }}';
+                var socket = io.connect('http://' + document.domain + ':' + location.port);
+                socket.on('connect', function() {
+                        socket.emit('NewSessionID',
+         {
+                    'sid' : socket.id,
+            })
+        });
+
+        socket.on('receiveMessage', function(data) {
+                                receiveMessage(data);
+                                alertUser(data['interaction_id'], true);
+               });
+        socket.on('closeInt', function(data){
+                                closeInt(data);
+        });
+
+        function sendMessage( interaction_id, employee, message ){
+                socket.emit( 'SendMessage', {
+                'to' : employee,
+                'interaction_id' : interaction_id,
+                'message' : message,
+                'from' : socket.id,
+                'time_stamp' : today.getHours()+':'+today.getMinutes()  } );
+}
+
+        function closeChat(data){
+          socket.emit( 'closeChat', {
+            'sid' : socket.id,
+            'employee' : data['employee'],
+            'interaction_resolution' : data['interaction_resolution'],
+            'interaction_id' : data['interaction_id']
+          } )
+
+        }
+
+//for jquery, jinja isn't processed there.
+const agent_real_name = '{{ current_user.real_name }}';
+const today = new Date();
+
+
+
+  </script>
+  </body>
+
+</html>

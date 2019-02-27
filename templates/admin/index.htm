@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Admin</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!-- Material Kit CSS -->
+  <link href="{{ url_for('static', filename='admin-static/css/material-dashboard.min.css') }}" rel="stylesheet" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='graphics/logo.jpg') }}">
+
+</head>
+
+<body class="dark-edition">
+  <div class="wrapper ">
+    <div class="sidebar" data-color="azure" data-background-color="black" data-image="{{ url_for('static', filename='admin-static/img/sidebar-2.jpg') }}">
+      <!--
+      Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+      Tip 2: you can also add an image using data-image tag
+  -->
+      <div class="logo">
+        <a href="#" class="simple-text logo-normal">
+          <img width="75" height="75" src="{{ url_for('static', filename='graphics/logo.jpg') }}">
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li class="nav-item active  ">
+            <a class="nav-link" href="javascript:void(0)">
+              <i class="material-icons">dashboard</i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/users">
+              <i class="material-icons">person</i>
+              <p>Users</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/chats">
+              <i class="material-icons">question_answer</i>
+              <p>Chats</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/transcripts">
+              <i class="material-icons">inbox</i>
+              <p>Transcripts</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/tracker">
+              <i class="material-icons">bug_report</i>
+              <p>Tracker</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/admin/settings">
+              <i class="material-icons">dns</i>
+              <p>Settings</p>
+            </a>
+          </li>
+          <!-- your sidebar here -->
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
+          </div>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+            <span class="navbar-toggler-icon icon-bar"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">
+                  <!-- Top right stuff//-->
+                  <p class="d-lg-none d-md-block">
+                    Notifications
+                  </p>
+                </a>
+              </li>
+              <!-- your navbar here -->
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+      <div class="content">
+        <div class="container-fluid">
+          <!-- your content here -->
+          <div class="row">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-info card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">chat</i>
+                  </div>
+                  <p class="card-category">Active Chats</p>
+                  <h3 class="card-title">0</h3>
+                </div>
+                <div class="card-footer">
+
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-info card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">people</i>
+                  </div>
+                  <p class="card-category">Active Agents</p>
+                  <h3 class="card-title">0</h3>
+                </div>
+                <div class="card-footer">
+
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-info card-header-icon">
+                  <div class="card-icon">
+                    <i class="material-icons">work</i>
+                  </div>
+                  <p class="card-category">Top Case Type</p>
+                  <h3 class="card-title">0</h3>
+                </div>
+                <div class="card-footer">
+
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+              <div class="card card-stats">
+                <div class="card-header card-header-info card-header-icon">
+                  <div class="card-icon">
+                    <i class="fa blekh"></i>
+                  </div>
+                  <p class="card-category">Something</p>
+                  <h3 class="card-title">+245</h3>
+                </div>
+                <div class="card-footer">
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="stats">
+            <i class="material-icons">update</i> Updated on
+          </div>
+          <hr/>
+        </div>
+        <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                      <div class="card">
+                        <div class="card-header card-header-warning">
+                          <h4 class="card-title">Most Case Creations</h4>
+                          <p class="card-category">Employees with the most case creations in the past 24 hours</p>
+                        </div>
+                        <div class="card-body table-responsive">
+                          <table class="table table-hover">
+                            <thead class="text-warning">
+                              <th>Employee Name</th>
+                              <th>Cases</th>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><b>Kevin Icovnig</b></td>
+                                <td>7</td>
+                              </tr>
+                              <tr>
+                                <td><b>Margaret Bido</b></td>
+                                <td>5</td>
+                              </tr>
+                              <tr>
+                                <td><b>Jericho Montaya</b></td>
+                                <td>5</td>
+                              </tr>
+                              <tr>
+                                <td><b>Mark Reglo</b></td>
+                                <td>4</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-12">
+              <div class="card card-chart">
+                <div class="card-header card-header-warning">
+                  <div class="ct-chart" id="websiteViewsChart"></div>
+                </div>
+                <div class="card-body">
+                  <h4 class="card-title">Email Subscriptions</h4>
+                  <p class="card-category">Last Campaign Performance</p>
+                </div>
+                <div class="card-footer">
+                  <div class="stats">
+                    <i class="material-icons">access_time</i> campaign sent 2 days ago
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+      <footer class="footer">
+        <div class="container-fluid">
+          <nav class="float-left">
+            <ul>
+              <li>
+
+              </li>
+            </ul>
+          </nav>
+
+          <!-- your footer here -->
+        </div>
+      </footer>
+    </div>
+  </div>
+  <!--   Core JS Files   -->
+  <script src="{{ url_for('static', filename='admin-static/js/core/popper.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='admin-static/js/core/bootstrap-material-design.min.js') }}"></script>
+  <script src="https://unpkg.com/default-passive-events"></script>
+  <script src="{{ url_for('static', filename='admin-static/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  <!-- Chartist JS -->
+  <script src="{{ url_for('static', filename='admin-static/js/plugins/chartist.min.js') }}"></script>
+  <!--  Notifications Plugin    -->
+  <script src="{{ url_for('static', filename='admin-static/js/plugins/bootstrap-notify.js') }}"></script>
+  <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{{ url_for('static', filename='admin-static/js/material-dashboard.js') }}"></script>
+  <!-- Material Dashboard DEMO methods, don't include it in your project! -->
+
+  <script>
+
+  </script>
+</body>
+
+</html>
