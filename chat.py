@@ -79,7 +79,7 @@ def create_chat_session(USER, notes):
 
     return agent, interaction_id
 
-system_db = system_database('localhost', 'is_96Qh2vwY9y2SE', 'QcMh7n0hyYWfV5hXIf', 'is_Y8ZZ4wQYD6Cu7bNZ')
+system_db = system_database('localhost', 'redacted', 'redacted', 'redacted')
 
 #Socket management
 def CreateCase(agent, employee, interaction_id, notes):
